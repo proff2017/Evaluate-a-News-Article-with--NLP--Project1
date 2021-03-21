@@ -1,3 +1,23 @@
+const post = async (url = "", data = {}) => {
+    console.log('Working!!');
+    const responseOfAPI = await fetch(url, {
+        method: 'POST',
+        credentials: 'same-origin',
+        mode: 'cors',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    });
+    try {
+        const newData = await responseOfAPI.json();
+        console.log('Data received:', newData)
+        return newData;
+    } catch (error) {
+        console.log('error', error);
+    }
+};
+
 function handleSubmit(event) {
     event.preventDefault()
 
@@ -7,7 +27,7 @@ function handleSubmit(event) {
     if(Client.checkURL(iUrl)) {
     console.log("::: Form Submitted :::")
 
-    postData('http://localhost:8081/api', {url: iUrl})
+    post('http://localhost:8081/add-url', {url: iUrl})
 
     .then(function(res) {
         document.getElementById("confidence").innerHTML = `Confidence: ${res.confidence}`;
@@ -20,25 +40,6 @@ function handleSubmit(event) {
     }
 }
 
-const postData = async (url = "", data = {}) => {
-    console.log('Working!!');
-    const response = await fetch(url, {
-        method: 'POST',
-        credentials: 'same-origin',
-        mode: 'cors',
-        headers: {
-        'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-    });
-    try {
-        const newData = await response.json();
-        console.log('Data received:', newData)
-        return newData;
-    } catch (error) {
-        console.log('error', error);
-    }
-};
 
 
 export { handleSubmit }
